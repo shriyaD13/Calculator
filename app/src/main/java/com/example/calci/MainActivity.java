@@ -1,5 +1,6 @@
 package com.example.calci;
 
+//Importing the required classes
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,9 +12,12 @@ import android.widget.TextView;
 import static java.lang.Double.NaN;
 
 public class MainActivity extends AppCompatActivity {
+//    Declaring the buttons and the textviews
     private Button zero,one,two,three,four,five,six,seven,eight,nine,add,sub,multi,divide,equ,clear,percentage,point,power;
     private TextView info;
     private TextView Result;
+
+//    Initialising the variables required
     private final char ADDITION = '+',SUBTRACTION = '-',MULTIPLICATION = '*',DIVISION = '/',EQU = '=',PERCENTAGE = '%',POWER = '^';
     private Double val1 = NaN,val2 = NaN;
     private char ACTION;
@@ -23,7 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        Initialising the buttons and the textviews
         setupUIView();
+
+//        Adding onclick listener to all the buttons which specifies what is to be done when clicked
         zero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,12 +94,20 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                calling the compute method to calculate the result
                 compute();
+
+//                setting the action to addition
                 ACTION = ADDITION;
+
+//                displaying the result
                 Result.setText(String.valueOf(val1) + "+");
+
+//                Clearing the input area
                 info.setText(null);
             }
         });
+
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,8 +140,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 compute();
                 ACTION = EQU;
+
+//                displaying the result
                 if(Double.isNaN(val2)) Result.setText(String.valueOf(val1));
                 else Result.setText(Result.getText().toString() + String.valueOf(val2) + " = " + String.valueOf(val1));
+
+//                clearing the screen
                 info.setText(null);
             }
         });
@@ -136,10 +155,13 @@ public class MainActivity extends AppCompatActivity {
                 if(info.getText().length() > 0 )
                 {
                     CharSequence name = info.getText().toString();
+
+//                    clearing one integer at a time
                     info.setText(name.subSequence(0,name.length()-1));
                 }
                 else
                 {
+//                    resetting everything
                     val1  = NaN;
                     val2 = NaN;
                     info.setText(null);
@@ -201,41 +223,44 @@ public class MainActivity extends AppCompatActivity {
 
     private void compute()
     {
+//        checking if the val1 is not a NULL
         if(!Double.isNaN(val1))
         {
             if(ACTION == PERCENTAGE) val1 = val1/100.0;
             else {
-                val2 = Double.parseDouble(info.getText().toString());
-                if(!Double.isNaN(val2)){
-                switch (ACTION) {
-                    case ADDITION:
-                        val1 = (val1 + val2);
-                        break;
-                    case SUBTRACTION:
-                        val1 = val1 - val2;
-                        break;
-                    case MULTIPLICATION:
-                        val1 = val1 * val2;
-                        break;
-                    case DIVISION:
-                        val1 = val1 / val2;
-                        break;
-                    case EQU:
-                        break;
-                    case POWER:
-                        val1 = Math.pow(val1, val2);
 
-                        break;
-                }
+//                Saving the input to val2
+                val2 = Double.parseDouble(info.getText().toString());
+
+//                Checking if the val2 is not NULL
+                if(!Double.isNaN(val2)){
+                    switch (ACTION) {
+                        case ADDITION:
+                            val1 = (val1 + val2);
+                            break;
+                        case SUBTRACTION:
+                            val1 = val1 - val2;
+                            break;
+                        case MULTIPLICATION:
+                            val1 = val1 * val2;
+                            break;
+                        case DIVISION:
+                            val1 = val1 / val2;
+                            break;
+                        case EQU:
+                            break;
+                        case POWER:
+                            val1 = Math.pow(val1, val2);
+                            break;
+                    }
                 }
                 else Result.setText(String.valueOf(val1) + info.getText().toString());
             }
-
-
         }
         else
         {
-            if(Double.parseDouble(info.getText().toString()) != NaN) val1 = Double.parseDouble(info.getText().toString());
+//            if val1 is NULL take the input
+            val1 = Double.parseDouble(info.getText().toString());
         }
     }
 }
